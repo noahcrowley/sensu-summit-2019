@@ -1,0 +1,9 @@
+type: Asset
+api_version: core/v2
+metadata:
+  name: sensu-prometheus-collector
+  namespace: default
+spec:
+  url: https://assets.bonsai.sensu.io/ef812286f59de36a40e51178024b81c69666e1b7/sensu-prometheus-collector_1.1.6_linux_amd64.tar.gz
+  sha512: a70056ca02662fbf2999460f6be93f174c7e09c5a8b12efc7cc42ce1ccb5570ee0f328a2dd8223f506df3b5972f7f521728f7bdd6abf9f6ca2234d690aeb3808
+

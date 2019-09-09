@@ -1,0 +1,50 @@
+version: '3'
+services:
+
+  sensu:
+    image: sensu/sensu:5.12.0
+    command: sensu-backend start --state-dir /var/lib/sensu/sensu-backend --log-level debug
+    volumes:
+      - ./data/sensu:/var/lib/sensu/
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+      - "8081:8081"
+
+  sensu-agent:
+    image: sensu/sensu:5.12.0
+    command: sensu-agent start --backend-url ws://sensu-summit-2019_sensu_1:8081 --log-level debug --subscriptions webserver,system --api-host 0.0.0.0 --cache-dir /var/lib/sensu
+    volumes:
+      - ./data/sensu-agent:/var/lib/sensu/
+    ports:
+      - "3031:3031"
+
+  influxdb:
+    # Full tag list: https://hub.docker.com/r/library/influxdb/tags/
+    image: influxdb:1.7.8
+    volumes:
+      # Mount for influxdb data directory
+      - ./data/influxdb/data/:/var/lib/influxdb/
+      # Mount for influxdb configuration
+      - ./data/influxdb/config/:/etc/influxdb/
+    ports:
+      # The API for InfluxDB is served on port 8086
+      - "8086:8086"
+      - "8082:8082"
+      # UDP Port
+      - "8089:8089"
+
+  chronograf:
+    # Full tag list: https://hub.docker.com/r/library/influxdb/tags/
+    image: chronograf:1.7.14
+    volumes:
+      # Mount for chronograf data directory
+      - ./data/chronograf/:/var/lib/chronograf/
+    ports:
+      # The WebUI for Chronograf is served on port 8888
+      - "8888:8888"
+
+  caturday:
+    image: fntlnz/caturday:latest
+    ports:
+      - "3333:8080"
